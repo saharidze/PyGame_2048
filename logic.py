@@ -2,9 +2,6 @@
 Logic of game
 """
 import random
-import sys
-import pygame.event
-import pygame
 
 
 def pretty_print(mas):

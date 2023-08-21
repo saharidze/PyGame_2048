@@ -1,27 +1,62 @@
 """
 Body of game
 """
+import random
+import sys
+
 import pygame.transform
 
-from database import *
-from logic import *
+from database import get_best
+from logic import (
+    can_move,
+    get_empty_list,
+    get_index_from_number,
+    insert_2_or_4,
+    is_zero_in_mas,
+    move_down,
+    move_left,
+    move_right,
+    move_up,
+    pretty_print,
+)
 
 GAMERS_DB = get_best()
+USERNAME = None
 
 
 def draw_intro():
     img2048 = pygame.image.load("Intro.jpg")
     font = pygame.font.SysFont("stxinkai", 70)
     text_welcome = font.render("Здарова", True, WHITE)
-    while True:
+    name = ""
+    is_find_name = False
+    while not is_find_name:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
+            elif event.type == pygame.KEYDOWN:
+                if event.unicode.isalpha():
+                    name += event.unicode
+                elif event.key == pygame.K_BACKSPACE:
+                    name = name[:-1]
+                elif event.key == pygame.K_RETURN:
+                    if len(name) > 2:
+                        global USERNAME
+                        USERNAME = name
+                        is_find_name = True
+                        break
+
+        screen.fill(BLACK)
         screen.blit(pygame.transform.scale(img2048, [200, 200]), (10, 10))
         screen.blit(text_welcome, (250, 60))
+        text_name = font.render(name, True, WHITE)
+        react_name = text_name.get_rect()
+        react_name.center = screen.get_rect().center
+        screen.blit(text_name, react_name)
         pygame.display.update()
 
+    print(USERNAME)
 
 def draw_top_gaymers():
     font_top = pygame.font.SysFont("simsun", 30)
@@ -48,7 +83,6 @@ def draw_interface(score, delta=0):
     if delta > 0:
         text_delta = font_delta.render(f"+{delta}", True, BLACK)
         screen.blit(text_delta, (175, 85))
-    pretty_print(mas)
     draw_top_gaymers()
     for row in range(BLOCKS):
         for column in range(BLOCKS):
