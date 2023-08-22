@@ -14,6 +14,16 @@ create table if not exists Records (
 )
 
 
+def insert_result(name, score):
+    cur.execute(
+        """
+        insert into Records values(?,?)
+        """,
+        (name, score),
+    )
+    bd.commit()
+
+
 def get_best():
     cur.execute(
         """
@@ -23,7 +33,3 @@ def get_best():
     """
     )
     return cur.fetchall()
-
-
-print(get_best())
-
