@@ -3,7 +3,6 @@ Body of game
 """
 import random
 import sys
-
 import pygame
 import pygame.transform
 
@@ -37,7 +36,7 @@ pygame.display.set_caption("2048")
 def draw_intro():
     """Прорисовка заставки"""
     img2048 = pygame.image.load("Intro.jpg")
-    font = pygame.font.SysFont("stxinkai", 70)
+    font = pygame.font.SysFont("comicsansms", 70)
     text_welcome = font.render("Здарова", True, WHITE)
     name = ""
     is_find_name = False
@@ -71,8 +70,8 @@ def draw_intro():
 
 def draw_top_gaymers():
     """Прорисовка поля рекордов"""
-    font_top = pygame.font.SysFont("simsun", 30)
-    font_gaymer = pygame.font.SysFont("simsun", 24)
+    font_top = pygame.font.SysFont("comicsansms", 30)
+    font_gaymer = pygame.font.SysFont("comicsansms", 24)
     text_head = font_top.render("TryHards", True, BLACK)
     screen.blit(text_head, (250, 5))
     for index, gamer in enumerate(GAMERS_DB):
@@ -83,14 +82,14 @@ def draw_top_gaymers():
         print(index, name, score)
 
 
-def draw_interface(score, delta=0):
+def draw_interface(overall, delta=0):
     """Прорисовка основного поля"""
     pygame.draw.rect(screen, WHITE, TITLE_REC)
-    font = pygame.font.SysFont("stxingkai", 70)
-    font_score = pygame.font.SysFont("simsun", 48)
-    font_delta = pygame.font.SysFont("simsun", 24)
+    font = pygame.font.SysFont("comicsansms", 70)
+    font_score = pygame.font.SysFont("comicsansms", 48)
+    font_delta = pygame.font.SysFont("comicsansms", 24)
     text_score = font_score.render("Score", True, BLACK)
-    text_score_value = font_score.render(f"{score}", True, BLACK)
+    text_score_value = font_score.render(f"{overall}", True, BLACK)
     screen.blit(text_score, (20, 35))
     screen.blit(text_score_value, (175, 35))
     if delta > 0:
@@ -113,10 +112,10 @@ def draw_interface(score, delta=0):
 
 def draw_gameover():
     """Прорисовка после завершения игры"""
-    global USERNAME, mas, score
+    global USERNAME, mas, score, GAMERS_DB
     img2048 = pygame.image.load("Intro.jpg")
-    font = pygame.font.SysFont("stxinkai", 70)
-    text_gameover = font.render("ББ", True, WHITE)
+    font = pygame.font.SysFont("comicsansms", 70)
+    text_game_over = font.render("ББ", True, WHITE)
     text_score = font.render(f"{score}", True, WHITE)
     best_score = GAMERS_DB[0][1]
     if score > best_score:
@@ -126,6 +125,7 @@ def draw_gameover():
         text = "Nope"
         text_record = font.render(text, True, WHITE)
     insert_result(USERNAME, score)
+    GAMERS_DB = get_best()
     make_disigion = False
     while not make_disigion:
         for event in pygame.event.get():
@@ -144,7 +144,7 @@ def draw_gameover():
                     init_const()
 
         screen.fill(BLACK)
-        screen.blit(text_gameover, (230, 80))
+        screen.blit(text_game_over, (230, 80))
         screen.blit(text_score, (30, 250))
         screen.blit(text_record, (30, 300))
         screen.blit(pygame.transform.scale(img2048, [200, 200]), (10, 10))

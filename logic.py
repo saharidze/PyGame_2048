@@ -44,6 +44,7 @@ def is_zero_in_mas(mas):
 
 
 def move_left(mas):
+    # нужно сохранить первоначальное значение массива, как и при других движениях
     delta = 0
     for row in mas:
         while 0 in row:
@@ -122,4 +123,4 @@ def can_move(mas):
         for j in range(3):
             if mas[i][j] == mas[i][j + 1] or mas[i][j] == mas[i][j - 1]:
                 return True
-    return False
+    return mas[3][3] == mas[2][3] or mas[3][3] == mas[3][2]
